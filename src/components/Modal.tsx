@@ -1,10 +1,22 @@
-import { useImperativeHandle, useRef, forwardRef } from 'react';
-import { createPortal } from 'react-dom';
+import { useImperativeHandle, useRef, forwardRef, ReactNode } from 'react';
 import Button from './Button';
+import { createPortal } from 'react-dom';
 
-const Modal = forwardRef(function Modal({ children }, ref) {
+type ModalProps = {
+  children: ReactNode;
+};
+
+export type ModalHandle = {
+  open: () => void;
+  close: () => void;
+};
+
+const Modal = forwardRef<ModalHandle, ModalProps>(function Modal(
+  { children },
+  ref,
+) {
   const modalRoot = document.getElementById('modal-root');
-  const dialog = useRef();
+  const dialog = useRef<HTMLDialogElement | null>(null);
 
   useImperativeHandle(ref, () => ({
     open() {
@@ -15,10 +27,13 @@ const Modal = forwardRef(function Modal({ children }, ref) {
     },
   }));
 
+  if (!modalRoot) return null;
+
   return createPortal(
-    <dialog ref={dialog} className=" backdrop:bg-stone-900/90 p-4 rounded-md ">
+    <dialog ref={dialog} className="backdrop:bg-stone-900/90 p-4 rounded-md">
       {children}
-      <form method="dialog" className='"mt-4 text-right'>
+
+      <form method="dialog" className="mt-4 text-right">
         <Button>Close</Button>
       </form>
     </dialog>,
