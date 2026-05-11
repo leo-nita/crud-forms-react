@@ -47,11 +47,27 @@ function App() {
       };
     });
   };
+  function onDeleteTask() {
+    setProjectsState((prevState) => {
+      return {
+        ...prevState,
+        selectedProject: undefined,
+        projects: prevState.projects.filter(
+          (item) => item.id !== prevState.selectedProject,
+        ),
+      };
+    });
+  }
   let content;
   const selectedProjectObject = projectsState.projects.find(
     (item) => item.id === projectsState.selectedProject,
   );
-  content = <SelectedProject project={selectedProjectObject} />;
+  content = (
+    <SelectedProject
+      project={selectedProjectObject}
+      onDeleteTask={onDeleteTask}
+    />
+  );
   if (projectsState.selectedProject === null) {
     content = (
       <AddNewProject
@@ -62,6 +78,7 @@ function App() {
   } else if (projectsState.selectedProject === undefined) {
     content = <EmptyList onStartAddProject={handleStartAddProject} />;
   }
+
   return (
     <main className="h-screen my-8 flex gap-8">
       <SideBar
