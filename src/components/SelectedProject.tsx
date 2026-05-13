@@ -1,14 +1,20 @@
-import { ProjectObject } from '../types/Types';
+import { ProjectObject, TaskObject } from '../types/Types';
 import Tasks from './Tasks';
 
 type SelectedProjectProps = {
   project?: ProjectObject;
-  onDeleteTask: () => void;
+  onDeleteProject: () => void;
+  addTask: (text: string) => void;
+  tasks: TaskObject[];
+  onClear: (id: number) => void;
 };
 
 export default function SelectedProject({
   project,
-  onDeleteTask,
+  onDeleteProject,
+  addTask,
+  tasks,
+  onClear,
 }: SelectedProjectProps) {
   if (!project) {
     return null;
@@ -29,7 +35,7 @@ export default function SelectedProject({
           </h1>
 
           <button
-            onClick={onDeleteTask}
+            onClick={onDeleteProject}
             className="text-stone-600 hover:text-stone-950"
           >
             Delete
@@ -42,7 +48,7 @@ export default function SelectedProject({
           {project.description}
         </p>
       </header>
-      <Tasks />
+      <Tasks addTask={addTask} tasks={tasks} onClear={onClear} />
     </div>
   );
 }

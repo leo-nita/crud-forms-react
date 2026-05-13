@@ -4,8 +4,14 @@ export type ProjectObject = {
   dueDate: string;
   id: number;
 };
+export type TaskObject = {
+  selectedProjectId: number;
+  text: string;
+  id: number;
+};
 
 export type ProjectsState = {
   selectedProject: null | undefined | number;
   projects: ProjectObject[];
+  tasks: TaskObject[];
 };
