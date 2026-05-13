@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 
 type ModalProps = {
   children: ReactNode;
+  id: string;
 };
 
 export type ModalHandle = {
@@ -12,7 +13,7 @@ export type ModalHandle = {
 };
 
 const Modal = forwardRef<ModalHandle, ModalProps>(function Modal(
-  { children },
+  { children, id },
   ref,
 ) {
   const modalRoot = document.getElementById('modal-root');
@@ -30,7 +31,11 @@ const Modal = forwardRef<ModalHandle, ModalProps>(function Modal(
   if (!modalRoot) return null;
 
   return createPortal(
-    <dialog ref={dialog} className="backdrop:bg-stone-900/90 p-4 rounded-md">
+    <dialog
+      ref={dialog}
+      className="backdrop:bg-stone-900/90 p-4 rounded-md"
+      id={id}
+    >
       {children}
 
       <form method="dialog" className="mt-4 text-right">
